@@ -1,0 +1,36 @@
+name: Deploy static content to Pages
+on:
+  # mainブランチに変更がプッシュされたときに実行
+  push:
+    branches: ["main"]
+  # Actionsタブから手動でデプロイを実行できるようにする
+  workflow_dispatch:
+# GITHUB_TOKENの権限を設定（Pagesへの書き込み許可）
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+# 複数回プッシュされたときに、現在実行中のものをキャンセルせず順次処理する設定
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+jobs:
+  # デプロイするためのジョブ
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # 「.」 はルート階層（index.html がある階層）にあるすべてのファイルをアップロードするという意味です
+          path: '.'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
