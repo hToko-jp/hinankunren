@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MosaicArt Web - モザイク壁画作成ツール</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h1>MosaicArt Web</h1>
+    <p class="subtitle">文化祭・体育祭向け モザイク壁画作成支援ツール</p>
+
+    <div class="container">
+        <!-- 左側：設定・アップロード -->
+        <div class="panel">
+            <h2>1. 画像をアップロード</h2>
+            <div class="dropzone" id="dropZone">
+                <p>ここをクリックするか、画像をドラッグ＆ドロップ</p>
+                <input type="file" id="imageInput" accept="image/*" style="display: none;">
+            </div>
+
+            <div class="input-group">
+                <label for="tileWidth">横方向の枚数 (最大2000)<br><small>※完成時の横幅を「色紙何枚分」にするか指定します</small></label>
+                <input type="number" id="tileWidth" value="100" min="10" max="2000">
+            </div>
+
+            <div class="input-group">
+                <label for="blockSize">ブロック分割サイズ<br><small>※作業を分担するためのブロック単位 (例: 10×10枚で1ブロック)</small></label>
+                <input type="number" id="blockSize" value="10" min="1" max="100">
+            </div>
+
+            <div class="input-group">
+                <label>使用するパレット (クリックでON/OFFを切り替えられます)</label>
+                <div id="paletteDisplay" class="palette-grid"></div>
+            </div>
+
+            <button id="generateBtn" class="btn-primary">モザイク画像を生成</button>
+        </div>
+
+        <!-- 右側：プレビュー・ダウンロード -->
+        <div class="panel">
+            <h2>2. プレビューとダウンロード</h2>
+
+            <div class="preview-container">
+                <img id="mosaicPreview" class="preview-img" alt="ここにモザイク化された画像が表示されます">
+            </div>
+
+            <div id="downloadsSection" class="downloads-section" style="display: none;">
+                <p>生成が完了しました！以下のファイルを出力できます。</p>
+                <button id="dlImageBtn" class="btn-secondary">🖼 減色画像ダウンロード (PNG)</button>
+                <button id="dlColorMapBtn" class="btn-secondary">📝 色指定表ダウンロード (Excel)</button>
+                <button id="dlSummaryBtn" class="btn-secondary">📊 ブロック集計表ダウンロード (CSV)</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script src="main.js"></script>
+</body>
+
+</html>
